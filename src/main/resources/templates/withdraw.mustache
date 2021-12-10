@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Снятие денег</title>
+</head>
+<body>
+<form method="post">
+    <div>Ваш баланс: </div>
+    {{#client}}
+        <div>
+            <b>{{balance}}</b>
+        </div>
+    {{/client}}
+    <div>Снятие денег</div>
+    <div>
+        <form method="post" action="withdraw">
+            <input type="number" min="1" name="withdraw" placeholder="Сумма" />
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <button type="submit">Снять деньги</button>
+        </form>
+        {{#message3}}
+            {{message3}}
+        {{/message3}}
+    </div>
+    <a href="/main">Назад</a>
+</form>
+
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+
+<html>
+<head>
+
+    <title>Регистрация</title>
+</head>
+<body>
+<style>
+    input:invalid {
+        border-color: red;
+    }
+</style>
+Здравствуйте, чтоб пользоваться нашим банком вам надо зарегистрироваться.
+<form action="/registration" method="post">
+    <div><label> Юзернейм:<input type="text" pattern="[A-Za-zА-Яа-яЁё0-9]+" placeholder="Уникальный идентификатор" name="username"/> </label></div>
+    <div><label> Имя:     <input type="text" pattern="[A-Za-zА-Яа-яЁё]+" placeholder="Ваше имя" name="name"/> </label></div>
+    <div><label> Пароль:  <input type="password" name="password"/> </label></div>
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+    <div><input type="submit" value="Sign In"/></div>
+</form>
+{{#message}}
+    {{message}}
+{{/message}}
+</body>
+</html>

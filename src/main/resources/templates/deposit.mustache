@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Пополнение баланса</title>
+</head>
+<body>
+<form method="post">
+    <div>Ваш баланс: </div>
+    {{#client}}
+        <div>
+            <b>{{balance}}</b>
+        </div>
+    {{/client}}
+    <div>Пополнение баланса</div>
+    <div>
+        <form method="post" action="deposit">
+            <input type="number" min="1" name="deposit" placeholder="Сумма" />
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <button type="submit">Пополнить</button>
+        </form>
+        {{#message1}}
+            {{message1}}
+        {{/message1}}
+    </div>
+    <a href="/main">Назад</a>
+</form>
+
+</body>
+</html>

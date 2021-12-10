@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Перевод денег</title>
+</head>
+<body>
+<form method="post">
+    <div>Ваш баланс: </div>
+    {{#client}}
+        <div>
+            <b>{{balance}}</b>
+        </div>
+    {{/client}}
+    <div>Перевод денег</div>
+    <div>
+        <form method="post" action="transfer">
+            <input type="number" min="1" name="transfer" placeholder="Сумма" />
+            <input type="text" name="username" placeholder="Юзернейм получателя" />
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <button type="submit">Перевести деньги</button>
+        </form>
+        {{#message2}}
+            {{message2}}
+        {{/message2}}
+    </div>
+    <a href="/main">Назад</a>
+</form>
+
+</body>
+</html>
