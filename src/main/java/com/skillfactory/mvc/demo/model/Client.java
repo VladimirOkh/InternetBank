@@ -56,6 +56,8 @@ public class Client implements UserDetails {
         this.username = username;
     }
 
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
@@ -67,7 +69,7 @@ public class Client implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return username;
     }
 
     @Override

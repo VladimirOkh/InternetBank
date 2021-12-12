@@ -25,17 +25,14 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addClient(Client client, Map<String, Object> model) {
-
-        Client clientFromDb = clientRepository.findByUsername(client.getUsername());
-
-        if (clientFromDb != null) {
+        try {
+            client.setBalance(0);
+            client.setRoles(Collections.singleton(Role.USER));
+            clientRepository.save(client);
+        }catch (Exception e) {
             model.put("message", "Username already registered!");
             return "registration";
         }
-
-        client.setBalance(0);
-        client.setRoles(Collections.singleton(Role.USER));
-        clientRepository.save(client);
 
         return "redirect:/login";
     }
