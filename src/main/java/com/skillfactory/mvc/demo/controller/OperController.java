@@ -6,13 +6,11 @@ import com.skillfactory.mvc.demo.repository.ClientRepository;
 import com.skillfactory.mvc.demo.repository.OperationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -25,6 +23,9 @@ public class OperController {
     @Autowired
     private OperationRepository operationRepository;
 
+    private final Integer depositMoney_t = 1;
+    private final Integer sendTranfer_t = 2;
+    private final Integer withdraw_t = 3;
 
 
     //Пополнение счета
@@ -44,20 +45,22 @@ public class OperController {
             @RequestParam Integer deposit,
             Map<String, Object> model)
     {
-        Date date = new Date();
+
         if ((deposit != null)&&(deposit > 0)) {
             try {
                 client.setBalance(client.getBalance() + deposit);
+                Date date = new Date();
                 Operation oper = new Operation();
-                oper.setType(1);
+                oper.setType(depositMoney_t);
                 oper.setUsername(client.getUsername());
                 oper.setDate(date);
+                oper.setAmount(deposit);
                 model.put("message1","Удачно.");
                 clientRepository.save(client);
                 operationRepository.save(oper);
             }catch (Exception e){
-                System.out.println(e);
-            }model.put("message1","Ошибка! Попробуйте еще раз, пожалуйста.");
+                model.put("message1","Ошибка! Попробуйте еще раз, пожалуйста.");
+            }
 
         }else model.put("message1","Ошибка! Попробуйте еще раз, пожалуйста.");
         model.put("client", client);
@@ -94,8 +97,16 @@ public class OperController {
                 client1 = clientRepository.findByUsername(username);
                 if (!(client1.getUsername().equals(client.getUsername())))
                 {
+                    Date date = new Date();
+                    Operation send = new Operation();
+                    send.setType(sendTranfer_t);
+                    send.setUsername(client.getUsername());
+                    send.setReceiver_username(client1.getUsername());
+                    send.setDate(date);
+                    send.setAmount(transfer);
                     client1.setBalance(client1.getBalance() + transfer);
                     client.setBalance(client.getBalance() - transfer);
+                    operationRepository.save(send);
                     clientRepository.save(client1);
                     clientRepository.save(client);
                     model.put("message2", "Удачно.");
@@ -129,9 +140,17 @@ public class OperController {
 
         if ((withdraw != null)&&(withdraw > 0)&&(client.getBalance() >= withdraw)&&(client.getBalance()>0)) {
             client.setBalance(client.getBalance() - withdraw);
+            Date date = new Date();
+            Operation oper = new Operation();
+            oper.setType(withdraw_t);
+            oper.setUsername(client.getUsername());
+            oper.setDate(date);
+            oper.setAmount(withdraw);
+            operationRepository.save(oper);
+            clientRepository.save(client);
             model.put("message3","Удачно.");
         }else model.put("message3","Ошибка! Поплните баланс и попробуйте еще раз, пожалуйста.");
-        clientRepository.save(client);
+
         model.put("client", client);
         return "withdraw";
     }

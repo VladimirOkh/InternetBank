@@ -25,6 +25,13 @@ public class Operation {
     @Column(name = "operation_date")
     private Date date;
 
+    @Column(name = "amount")
+    private Integer amount;
+
+    @Column(name = "receiver_username")
+    private String receiver_username;
+
+
     public Operation(Long operation_id, String username, Integer type, Date date) {
         this.operation_id = operation_id;
         this.username = username;
@@ -34,6 +41,19 @@ public class Operation {
 
     public Operation(){
 
+    }
+
+    public void setReceiver_username(String receiver_username) {
+        this.receiver_username = receiver_username;
+    }
+
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Long getOperation_id() {
