@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>InternetBank</title>
+</head>
+<body>
+<div>История операций</div>
+<form method="post">
+    <input type="text" name="filter">
+    <button type="submit">Найти</button>
+</form>
+{{#operations}}
+    <div>
+        <b>{{date}}</b>
+        <div><span>{{type}}</span></div>
+        <div><i>{{amount}}</i></div>
+        <div>---------------------------------------</div>
+    </div>
+{{/operations}}
+</body>
+</html>
