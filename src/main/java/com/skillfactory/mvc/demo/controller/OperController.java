@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 @Controller
@@ -49,11 +52,12 @@ public class OperController {
         if ((deposit != null)&&(deposit > 0)) {
             try {
                 client.setBalance(client.getBalance() + deposit);
+                SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 Date date = new Date();
                 Operation oper = new Operation();
                 oper.setType(depositMoney_t);
                 oper.setUsername(client.getUsername());
-                oper.setDate(date);
+                oper.setDate(formater.format(date));
                 oper.setAmount(deposit);
                 model.put("message1","Удачно.");
                 clientRepository.save(client);
@@ -97,12 +101,13 @@ public class OperController {
                 client1 = clientRepository.findByUsername(username);
                 if (!(client1.getUsername().equals(client.getUsername())))
                 {
+                    SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                     Date date = new Date();
                     Operation send = new Operation();
                     send.setType(sendTranfer_t);
                     send.setUsername(client.getUsername());
                     send.setReceiver_username(client1.getUsername());
-                    send.setDate(date);
+                    send.setDate(formater.format(date));
                     send.setAmount(transfer);
                     client1.setBalance(client1.getBalance() + transfer);
                     client.setBalance(client.getBalance() - transfer);
@@ -140,11 +145,12 @@ public class OperController {
 
         if ((withdraw != null)&&(withdraw > 0)&&(client.getBalance() >= withdraw)&&(client.getBalance()>0)) {
             client.setBalance(client.getBalance() - withdraw);
+            SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             Date date = new Date();
             Operation oper = new Operation();
             oper.setType(withdraw_t);
             oper.setUsername(client.getUsername());
-            oper.setDate(date);
+            oper.setDate(formater.format(date));
             oper.setAmount(withdraw);
             operationRepository.save(oper);
             clientRepository.save(client);
@@ -154,4 +160,24 @@ public class OperController {
         model.put("client", client);
         return "withdraw";
     }
+
+    @GetMapping("/main/operationList")
+    public String getOperationList(Map<String, Object> model){
+        Iterable<Operation> operations = operationRepository.findAll();
+
+        model.put("operations", operations);
+
+        return "operationList";
+    }
+    @PostMapping("/main/operationList")
+    public String OperationList(Map<String, Object> model){
+
+        Iterable<Operation> operations = operationRepository.findAll();
+
+        model.put("operations", operations);
+
+        return "operationList";
+    }
+
+
 }

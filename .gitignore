@@ -1,0 +1,4 @@
+/target/
+/.idea/
+/src/main/resources/database/
+/src/main/resources/application.properties

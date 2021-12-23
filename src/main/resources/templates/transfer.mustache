@@ -2,16 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Перевод денег</title>
+    <title>InternetBank</title>
 </head>
 <body>
 <form method="post">
     <div>Ваш баланс: </div>
-    {{#client}}
-        <div>
-            <b>{{balance}}</b>
-        </div>
-    {{/client}}
+{{#client}}
+    <div>
+        <b>{{balance}}</b>
+    </div>
+{{/client}}
+
+
     <div>Перевод денег</div>
     <div>
         <form method="post" action="transfer">
@@ -26,6 +28,5 @@
     </div>
     <a href="/main">Назад</a>
 </form>
-
 </body>
 </html>

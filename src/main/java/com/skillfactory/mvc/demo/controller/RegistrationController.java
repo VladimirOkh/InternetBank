@@ -4,6 +4,7 @@ import com.skillfactory.mvc.demo.model.Role;
 import com.skillfactory.mvc.demo.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -30,7 +31,7 @@ public class RegistrationController {
             client.setRoles(Collections.singleton(Role.USER));
             clientRepository.save(client);
         }catch (Exception e) {
-            model.put("message", "Username already registered!");
+            model.put("message1","Username already registered!");
             return "registration";
         }
 

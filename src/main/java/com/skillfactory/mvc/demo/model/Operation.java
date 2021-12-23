@@ -19,20 +19,20 @@ public class Operation {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "operation_type")
+    @Column(name = "type")
     private Integer type;
 
-    @Column(name = "operation_date")
-    private Date date;
+    @Column(name = "date")
+    private String date;
 
     @Column(name = "amount")
     private Integer amount;
 
-    @Column(name = "receiver_username")
+    @Column(name = "receiver")
     private String receiver_username;
 
 
-    public Operation(Long operation_id, String username, Integer type, Date date) {
+    public Operation(Long operation_id, String username, Integer type, String date) {
         this.operation_id = operation_id;
         this.username = username;
         this.type = type;
@@ -80,11 +80,16 @@ public class Operation {
         this.type = type;
     }
 
-    public Date getDate() {
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getReceiver_username() {
+        return receiver_username;
     }
 }

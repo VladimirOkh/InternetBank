@@ -1,15 +1,15 @@
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-
-    <title>Регистрация</title>
+    <meta charset="UTF-8">
+    <title>InternetBank</title>
 </head>
-<body>
 <style>
     input:invalid {
         border-color: red;
     }
 </style>
+<body>
 Здравствуйте, чтоб пользоваться нашим банком вам надо зарегистрироваться.
 <form action="/registration" method="post">
     <div><label> Юзернейм:<input type="text" pattern="[A-Za-zА-Яа-яЁё0-9]+" placeholder="Уникальный идентификатор" name="username"/> </label></div>
@@ -17,9 +17,13 @@
     <div><label> Пароль:  <input type="password" name="password"/> </label></div>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
     <div><input type="submit" value="Sign In"/></div>
+    {{#message1}}
+        {{message1}}
+    {{/message1}}
 </form>
-{{#message}}
-    {{message}}
-{{/message}}
+
+
 </body>
 </html>
+
+

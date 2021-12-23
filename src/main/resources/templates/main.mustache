@@ -1,47 +1,47 @@
+<!DOCTYPE html>
 <html lang="en">
-<meta charset="UTF-8">
 <head>
     <meta charset="UTF-8">
-    <title>Профиль</title>
+    <title>InternetBank</title>
 </head>
 <body>
-    <div>
-        <form action="/logout" method="post">
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-            <input type ="submit" value="Sign Out"/>
-        </form>
-    </div>
-    <form method="post">
-        {{#client}}
-            <div>
-                <b>{{name}},</b>
-            </div>
-        {{/client}}
-        <div>добро пожаловать в банк</div>
-        <div>
-
-        </div>
-        <div>Ваш баланс: </div>
-        {{#client}}
-            <div>
-                <b>{{balance}}</b>
-            </div>
-        {{/client}}
-
-        <div>
-            <a href="/main/deposit">Пополнить баланс</a>
-        </div>
-        <div>
-            <a href="/main/transfer">Перевести деньги другому пользователю</a>
-        </div>
-        <div>
-            <a href="/main/withdraw">Снять деньги</a>
-        </div>
-
-
-
+<div>
+    <form action="/logout" method="post">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+        <input type ="submit" value="Sign Out"/>
     </form>
+</div>
+<form method="post">
+    {{#client}}
+        <div>
+            <b>{{name}},</b>
+        </div>
+    {{/client}}
+    <div>добро пожаловать в банк</div>
+    <div>
 
+    </div>
+    <div>Ваш баланс: </div>
+    {{#client}}
+        <div>
+            <b>{{balance}}</b>
+        </div>
+    {{/client}}
+
+    <div>
+        <a href="/main/deposit">Пополнить баланс</a>
+    </div>
+    <div>
+        <a href="/main/transfer">Перевести деньги другому пользователю</a>
+    </div>
+    <div>
+        <a href="/main/withdraw">Снять деньги</a>
+    </div>
+</form>
 </body>
 
 </html>
+
+
+
+
