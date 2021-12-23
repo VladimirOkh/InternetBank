@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -25,10 +24,6 @@ public class OperController {
 
     @Autowired
     private OperationRepository operationRepository;
-
-    private final Integer depositMoney_t = 1;
-    private final Integer sendTranfer_t = 2;
-    private final Integer withdraw_t = 3;
 
 
     //Пополнение счета
@@ -52,10 +47,10 @@ public class OperController {
         if ((deposit != null)&&(deposit > 0)) {
             try {
                 client.setBalance(client.getBalance() + deposit);
-                SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
                 Date date = new Date();
                 Operation oper = new Operation();
-                oper.setType(depositMoney_t);
+                oper.setType("Пополнение");
                 oper.setUsername(client.getUsername());
                 oper.setDate(formater.format(date));
                 oper.setAmount(deposit);
@@ -101,12 +96,12 @@ public class OperController {
                 client1 = clientRepository.findByUsername(username);
                 if (!(client1.getUsername().equals(client.getUsername())))
                 {
-                    SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
                     Date date = new Date();
                     Operation send = new Operation();
-                    send.setType(sendTranfer_t);
+                    send.setType("Перевод");
                     send.setUsername(client.getUsername());
-                    send.setReceiver_username(client1.getUsername());
+                    send.setReceiver(client1.getUsername());
                     send.setDate(formater.format(date));
                     send.setAmount(transfer);
                     client1.setBalance(client1.getBalance() + transfer);
@@ -145,10 +140,10 @@ public class OperController {
 
         if ((withdraw != null)&&(withdraw > 0)&&(client.getBalance() >= withdraw)&&(client.getBalance()>0)) {
             client.setBalance(client.getBalance() - withdraw);
-            SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
             Date date = new Date();
             Operation oper = new Operation();
-            oper.setType(withdraw_t);
+            oper.setType("Снятие");
             oper.setUsername(client.getUsername());
             oper.setDate(formater.format(date));
             oper.setAmount(withdraw);
@@ -161,22 +156,31 @@ public class OperController {
         return "withdraw";
     }
 
-    @GetMapping("/main/operationList")
-    public String getOperationList(Map<String, Object> model){
-        Iterable<Operation> operations = operationRepository.findAll();
+    @GetMapping("/main/operations")
+    public String getOperationList(
+            @AuthenticationPrincipal Client client,
+            Map<String, Object> model){
 
+
+        List<Operation> operations = operationRepository.findOperationsByUsername(client.getUsername());
         model.put("operations", operations);
 
-        return "operationList";
+        return "operations";
     }
-    @PostMapping("/main/operationList")
-    public String OperationList(Map<String, Object> model){
+    @PostMapping("/main/operations")
+    public String OperationList(
+            @AuthenticationPrincipal Client client,
+            Map<String, Object> model){
 
-        Iterable<Operation> operations = operationRepository.findAll();
+
+        List<Operation> operations = operationRepository.findOperationsByUsername(client.getUsername());
+
+
+
 
         model.put("operations", operations);
 
-        return "operationList";
+        return "operations";
     }
 
 

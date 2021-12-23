@@ -10,12 +10,18 @@
     <input type="text" name="filter">
     <button type="submit">Найти</button>
 </form>
+<a href="/main">Назад</a>
 {{#operations}}
     <div>
-        <b>{{date}}</b>
-        <div><span>{{type}}</span></div>
-        <div><i>{{amount}}</i></div>
-        <div>---------------------------------------</div>
+        <div>--------------------------------------------</div>
+        <i>{{date}}</i>
+        <b>{{type}}</b>
+        <th>{{amount}}</th>
+        {{#receiver}}
+            {{receiver}}
+        {{/receiver}}
+        {{^receiver}}
+        {{/receiver}}
     </div>
 {{/operations}}
 </body>

@@ -15,7 +15,7 @@
     <div>Снятие денег</div>
     <div>
         <form method="post" action="withdraw">
-            <input type="number" min="1" name="withdraw" placeholder="Сумма" />
+            <input type="number" min="1" name="withdraw" required placeholder="Сумма" />
             <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
             <button type="submit">Снять деньги</button>
         </form>

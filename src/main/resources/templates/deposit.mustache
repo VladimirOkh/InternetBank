@@ -15,7 +15,7 @@
     <div>Пополнение баланса</div>
     <div>
         <form method="post" action="deposit">
-            <input type="number" min="1" name="deposit" placeholder="Сумма" />
+            <input type="number" min="1" name="deposit" required placeholder="Сумма" />
             <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
             <button type="submit">Пополнить</button>
         </form>

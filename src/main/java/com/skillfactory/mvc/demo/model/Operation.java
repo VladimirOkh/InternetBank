@@ -20,7 +20,7 @@ public class Operation {
     private String username;
 
     @Column(name = "type")
-    private Integer type;
+    private String type;
 
     @Column(name = "date")
     private String date;
@@ -29,10 +29,10 @@ public class Operation {
     private Integer amount;
 
     @Column(name = "receiver")
-    private String receiver_username;
+    private String receiver;
 
 
-    public Operation(Long operation_id, String username, Integer type, String date) {
+    public Operation(Long operation_id, String username, String type, String date) {
         this.operation_id = operation_id;
         this.username = username;
         this.type = type;
@@ -43,9 +43,7 @@ public class Operation {
 
     }
 
-    public void setReceiver_username(String receiver_username) {
-        this.receiver_username = receiver_username;
-    }
+
 
 
     public Integer getAmount() {
@@ -72,14 +70,13 @@ public class Operation {
         this.username = username;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
-
 
     public String getDate() {
         return date;
@@ -89,7 +86,11 @@ public class Operation {
         this.date = date;
     }
 
-    public String getReceiver_username() {
-        return receiver_username;
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 }

@@ -17,8 +17,8 @@
     <div>Перевод денег</div>
     <div>
         <form method="post" action="transfer">
-            <input type="number" min="1" name="transfer" placeholder="Сумма" />
-            <input type="text" name="username" placeholder="Юзернейм получателя" />
+            <input type="number" min="1" name="transfer" required placeholder="Сумма" />
+            <input type="text" name="username" required placeholder="Юзернейм получателя" />
             <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
             <button type="submit">Перевести деньги</button>
         </form>
