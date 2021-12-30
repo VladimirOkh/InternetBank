@@ -7,18 +7,22 @@
 <body>
 <div>История операций</div>
 <form method="post">
-    <input type="text" name="filter">
+    <div>За определенное число выбранного месяца в году</div>
+    <input type="number" min="1" max="31" required placeholder="Число" name="filter1">
+    <input type="number" min="1" max="12" required placeholder="Месяц" name="filter2">
+    <input type="number" required placeholder="Год" name="filter3">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
     <button type="submit">Найти</button>
 </form>
 <a href="/main">Назад</a>
 {{#operations}}
     <div>
         <div>--------------------------------------------</div>
-        <i>{{date}}</i>
+        <i>{{day}}/</i><i>{{month}}/</i><i>{{year}}</i>
         <b>{{type}}</b>
-        <th>{{amount}}</th>
+        <th>На сумму: {{amount}}</th>
         {{#receiver}}
-            {{receiver}}
+            Пользователю: {{receiver}}
         {{/receiver}}
         {{^receiver}}
         {{/receiver}}

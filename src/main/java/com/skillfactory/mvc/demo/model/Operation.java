@@ -4,6 +4,7 @@ package com.skillfactory.mvc.demo.model;
 
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -22,8 +23,14 @@ public class Operation {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "date")
-    private String date;
+    @Column(name = "day")
+    private int day;
+
+    @Column(name = "month")
+    private int month;
+
+    @Column(name = "year")
+    private int year;
 
     @Column(name = "amount")
     private Integer amount;
@@ -31,13 +38,17 @@ public class Operation {
     @Column(name = "receiver")
     private String receiver;
 
-
-    public Operation(Long operation_id, String username, String type, String date) {
+    public Operation(Long operation_id, String username, String type, int day, int month, int year, Integer amount, String receiver) {
         this.operation_id = operation_id;
         this.username = username;
         this.type = type;
-        this.date = date;
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.amount = amount;
+        this.receiver = receiver;
     }
+
 
     public Operation(){
 
@@ -78,12 +89,28 @@ public class Operation {
         this.type = type;
     }
 
-    public String getDate() {
-        return date;
+    public int getDay() {
+        return day;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public String getReceiver() {

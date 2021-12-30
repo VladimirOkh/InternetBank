@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.util.*;
 
 @Controller
-public class OperController {
+public class OperationController {
 
     @Autowired
     private ClientRepository clientRepository;
@@ -47,16 +45,17 @@ public class OperController {
         if ((deposit != null)&&(deposit > 0)) {
             try {
                 client.setBalance(client.getBalance() + deposit);
-                SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-                Date date = new Date();
-                Operation oper = new Operation();
-                oper.setType("Пополнение");
-                oper.setUsername(client.getUsername());
-                oper.setDate(formater.format(date));
-                oper.setAmount(deposit);
+                Operation operation = new Operation();
+                operation.setType("Пополнение");
+                operation.setUsername(client.getUsername());
+                Calendar calendar = Calendar.getInstance();
+                operation.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+                operation.setMonth(calendar.get(Calendar.MONTH)+1);
+                operation.setYear(calendar.get(Calendar.YEAR));
+                operation.setAmount(deposit);
                 model.put("message1","Удачно.");
                 clientRepository.save(client);
-                operationRepository.save(oper);
+                operationRepository.save(operation);
             }catch (Exception e){
                 model.put("message1","Ошибка! Попробуйте еще раз, пожалуйста.");
             }
@@ -96,17 +95,19 @@ public class OperController {
                 client1 = clientRepository.findByUsername(username);
                 if (!(client1.getUsername().equals(client.getUsername())))
                 {
-                    SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-                    Date date = new Date();
-                    Operation send = new Operation();
-                    send.setType("Перевод");
-                    send.setUsername(client.getUsername());
-                    send.setReceiver(client1.getUsername());
-                    send.setDate(formater.format(date));
-                    send.setAmount(transfer);
+
+                    Operation operation = new Operation();
+                    operation.setType("Перевод");
+                    operation.setUsername(client.getUsername());
+                    operation.setReceiver(client1.getUsername());
+                    Calendar calendar = Calendar.getInstance();
+                    operation.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+                    operation.setMonth(calendar.get(Calendar.MONTH)+1);
+                    operation.setYear(calendar.get(Calendar.YEAR));
+                    operation.setAmount(transfer);
                     client1.setBalance(client1.getBalance() + transfer);
                     client.setBalance(client.getBalance() - transfer);
-                    operationRepository.save(send);
+                    operationRepository.save(operation);
                     clientRepository.save(client1);
                     clientRepository.save(client);
                     model.put("message2", "Удачно.");
@@ -135,19 +136,20 @@ public class OperController {
     public String withdraw(
             @AuthenticationPrincipal Client client,
             @RequestParam Integer withdraw,
-            Map<String, Object> model)
-    {
+            Map<String, Object> model) throws ParseException {
 
         if ((withdraw != null)&&(withdraw > 0)&&(client.getBalance() >= withdraw)&&(client.getBalance()>0)) {
             client.setBalance(client.getBalance() - withdraw);
-            SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-            Date date = new Date();
-            Operation oper = new Operation();
-            oper.setType("Снятие");
-            oper.setUsername(client.getUsername());
-            oper.setDate(formater.format(date));
-            oper.setAmount(withdraw);
-            operationRepository.save(oper);
+            Operation operation = new Operation();
+            operation.setType("Снятие");
+            operation.setUsername(client.getUsername());
+
+            Calendar calendar = Calendar.getInstance();
+            operation.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+            operation.setMonth(calendar.get(Calendar.MONTH)+1);
+            operation.setYear(calendar.get(Calendar.YEAR));
+            operation.setAmount(withdraw);
+            operationRepository.save(operation);
             clientRepository.save(client);
             model.put("message3","Удачно.");
         }else model.put("message3","Ошибка! Поплните баланс и попробуйте еще раз, пожалуйста.");
@@ -161,19 +163,26 @@ public class OperController {
             @AuthenticationPrincipal Client client,
             Map<String, Object> model){
 
+        List<Operation> operations;
 
-        List<Operation> operations = operationRepository.findOperationsByUsername(client.getUsername());
+        operations = operationRepository.findOperationsByUsername(client.getUsername());
+
         model.put("operations", operations);
 
         return "operations";
     }
     @PostMapping("/main/operations")
     public String OperationList(
-            @AuthenticationPrincipal Client client,
+            @RequestParam(required = false, defaultValue = "") Integer filter1,
+            @RequestParam(required = false, defaultValue = "") Integer filter2,
+            @RequestParam(required = false, defaultValue = "") Integer filter3,
             Map<String, Object> model){
 
-
-        List<Operation> operations = operationRepository.findOperationsByUsername(client.getUsername());
+        List<Operation> operations;
+        Calendar calendar = Calendar.getInstance();
+        if ((filter1 != null) && (filter2 != null) && (filter3 != null)){
+            operations = operationRepository.findOperationsByDayAndMonthAndYear(filter1,filter2,filter3);
+        }else operations = operationRepository.findOperationsByDayIsBetween(calendar.get(Calendar.DAY_OF_MONTH)-7,calendar.get(Calendar.DAY_OF_MONTH));
 
 
 
@@ -182,6 +191,8 @@ public class OperController {
 
         return "operations";
     }
+
+
 
 
 }

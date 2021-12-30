@@ -28,7 +28,6 @@ public class MainController {
     public String main(
             @AuthenticationPrincipal Client client,
             Map<String, Object> model){
-        //client = clientRepository.findByUsername(client.getUsername());
         model.put("client", client);
         return "main";
     }
